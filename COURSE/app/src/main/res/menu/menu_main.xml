@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.suleiman.material.activities.TabsHeaderActivity">
+
+    <item
+        android:id="@+id/Add"
+        android:orderInCategory="100"
+        android:title="Add Courses"
+        android:icon="@android:drawable/ic_input_add"
+        app:showAsAction="always|withText" />
+
+
+
+
+</menu>
