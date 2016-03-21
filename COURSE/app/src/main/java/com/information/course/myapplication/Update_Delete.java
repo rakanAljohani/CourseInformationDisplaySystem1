@@ -32,6 +32,9 @@ public class Update_Delete extends AppCompatActivity {
     Button update,delete;
     int dr_id;
     String id;
+    String name1;
+    String lab1;
+    String time1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +67,17 @@ public class Update_Delete extends AppCompatActivity {
         state.setText(cour.get(Schedule._STATE));
         time.setText(cour.get(Schedule._TIME));
 
+
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                name1 = name.getText().toString();
+                lab1 = lab.getText().toString();
+                time1= time.getText().toString();
+
                 PD.show();
-                String update_url = "http://bugshan.96.lt/update.php?id="+id+"&name="+name+"&lab="+lab+"&state="+state+"&time="+time;
+                String update_url = "http://bugshan.96.lt/update.php?id="+id+"&name="+name1+"&lab="+lab1+"&time="+time1+"&state="+state.getText().toString();
 
                 JsonObjectRequest update_request = new JsonObjectRequest(update_url,
                         null, new Response.Listener<JSONObject>() {
