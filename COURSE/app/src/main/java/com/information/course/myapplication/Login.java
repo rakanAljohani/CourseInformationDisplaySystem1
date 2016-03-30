@@ -30,7 +30,7 @@ public class Login extends AppCompatActivity {
     private RequestQueue mRequestQueue;
     private static Login mInstance;
 
-    String url = "http://bugshan.96.lt/login.php";
+    String url = "http://rakan.esy.es/login.php";
 
     EditText _id,pass;
     TextView create;

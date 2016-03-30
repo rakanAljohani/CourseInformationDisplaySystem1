@@ -42,6 +42,7 @@ public class Schedule extends AppCompatActivity {
     public static final String _LAB = "lab";
     public static final String _STATE = "state";
     public static final String _TIME = "time";
+    public static final String _DAYS= "days";
     int dr_id;
 
 
@@ -76,13 +77,16 @@ public class Schedule extends AppCompatActivity {
             }
         });
 
+
     }
 
     private void ReadDataFromDB() {
 
+
+
         PD.show();
 
-        String url = "http://bugshan.96.lt/read_all_courses.php?id="+ dr_id;
+        String url = "http://rakan.esy.es/read_all_courses.php?id="+ dr_id;
 
 
         JsonObjectRequest jreq = new JsonObjectRequest(Request.Method.GET, url,
@@ -99,21 +103,22 @@ public class Schedule extends AppCompatActivity {
                                 for (int i = 0; i < ja.length(); i++) {
 
                                     JSONObject jobj = ja.getJSONObject(i);
-                                    HashMap<String, String> item = new HashMap<String, String>();
-                                    item.put(_ID, jobj.getString(_ID));
-                                    item.put(_NAME,jobj.getString(_NAME));
-                                    item.put(_LAB, jobj.getString(_LAB));
-                                    item.put(_STATE,jobj.getString(_STATE));
-                                    item.put(_TIME, jobj.getString(_TIME));
+                                    HashMap<String, String> cour = new HashMap<String, String>();
+                                    cour.put(_ID, jobj.getString(_ID));
+                                    cour.put(_NAME,jobj.getString(_NAME));
+                                    cour.put(_LAB, jobj.getString(_LAB));
+                                    cour.put(_STATE,jobj.getString(_STATE));
+                                    cour.put(_TIME, jobj.getString(_TIME));
+                                    cour.put(_DAYS, jobj.getString(_DAYS));
 
 
 
-                                    COUR_List.add(item);
+                                    COUR_List.add(cour);
 
                                 } // for loop ends
 
-                                String [] fromFieldNames = new String[] { _NAME , _LAB , _STATE , _TIME };
-                                int [] toViewIDs = new int [] { R.id.course_name, R.id.course_lab,R.id.course_state,R.id.course_time};
+                                String [] fromFieldNames = new String[] { _NAME , _LAB , _STATE , _DAYS,_TIME };
+                                int [] toViewIDs = new int [] { R.id.course_name, R.id.course_lab,R.id.course_state,R.id.course_days,R.id.course_time};
 
                                 adapter = new SimpleAdapter(getApplicationContext(), COUR_List,R.layout.schedule_data, fromFieldNames, toViewIDs);
 
@@ -137,14 +142,10 @@ public class Schedule extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 PD.dismiss();
+                Toast.makeText(getApplicationContext(), "fail" + error, Toast.LENGTH_LONG).show();
+
             }
-        })
-
-
-
-
-
-                ;
+        }) ;
 
 
         // Adding request to request queue
@@ -158,6 +159,7 @@ public class Schedule extends AppCompatActivity {
 
     public RequestQueue getReqQueue() {
         if (mRequestQueue == null) {
+
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }
 
@@ -176,7 +178,7 @@ public class Schedule extends AppCompatActivity {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+       public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
@@ -186,7 +188,7 @@ public class Schedule extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.Add:
-         startActivity(new Intent(this,add_course.class));
+                startActivity(new Intent(this,add_course.class));
                 return true;
 
             default:

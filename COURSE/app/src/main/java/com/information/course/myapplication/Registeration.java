@@ -26,7 +26,7 @@ public class Registeration extends AppCompatActivity {
     EditText name,id,pass,conpass;
     Button sign;
 
-    String url = "http://bugshan.96.lt/db_registeration.php";
+    String url = "http://rakan.esy.es/db_registeration.php";
     String dr_name;
     String dr_number;
     String dr_password;

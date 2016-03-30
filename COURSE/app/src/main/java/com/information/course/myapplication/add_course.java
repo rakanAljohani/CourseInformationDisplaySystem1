@@ -10,8 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -28,26 +30,24 @@ import java.util.Map;
 public class add_course extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private RequestQueue mRequestQueue;
     private static add_course mInstance;
-    String url = "http://bugshan.96.lt/db_add_course.php";
+    String url = "http://rakan.esy.es/db_add_course.php";
     String cou_name;
     String cou_time;
     String cou_lab;
     String cou_state;
     Button timePicker;
-    Button datePicker;
+
     static final int DIALOG_ID = 0;
     static final int DIALOG_ID2 = 1;
-    int year_x;
-    int month_x;
-    int day_x;
+
     int hour_x ;
     int minute_x;
     int  dr_id;
-
+    String days;
     ProgressDialog PD;
 
 
-    EditText name, time, lab, state;
+    EditText name, lab, state;
     Button  add;
 
     @Override
@@ -55,6 +55,48 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
         mInstance = this;
+        final String[] Days;
+
+        Days =getResources().getStringArray(R.array.Days);
+        Spinner s1 = (Spinner) findViewById(R.id.spinner);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, Days);
+
+        s1.setAdapter(adapter);
+
+        s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3)
+            {
+                int index = arg0.getSelectedItemPosition();
+
+              if(Days[index].equals("Choose a day")){
+                  days="";
+              }
+               else if(Days[index].equals("Sunday")){
+                  days="Sunday";
+              }
+              else if(Days[index].equals("Monday")){
+                  days="Monday";
+              }
+              else if(Days[index].equals("Tuesday")){
+                  days="Tuesday";
+              }
+              else if(Days[index].equals("Wednesday")){
+                  days="Wednesday";
+              }
+              else if(Days[index].equals("Thursday")){
+                  days="Thursday";
+              }
+
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
+
 
         PD = new ProgressDialog(this);
         PD.setMessage("Loading.....");
@@ -62,7 +104,7 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
 
 
         name = (EditText) findViewById(R.id.name_course);
-        time = (EditText) findViewById(R.id.time_course);
+
         lab = (EditText) findViewById(R.id.lab_course);
         state = (EditText) findViewById(R.id.state_course);
         add = (Button) findViewById(R.id.add_course);
@@ -76,19 +118,25 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
 
                 if (name.getText().toString().equals("")) {
                     Toast.makeText(add_course.this, "Name Empty", Toast.LENGTH_SHORT).show();
-                } else if (time.getText().toString().equals("")) {
-                    Toast.makeText(add_course.this, "Time Empty", Toast.LENGTH_SHORT).show();
-
-                } else if (lab.getText().toString().equals("")) {
+                }
+                else if (lab.getText().toString().equals("")) {
                     Toast.makeText(add_course.this, "Lab Empty", Toast.LENGTH_SHORT).show();
 
                 } else if (state.getText().toString().equals("")) {
                     Toast.makeText(add_course.this, "State Empty", Toast.LENGTH_SHORT).show();
 
-                } else {
+                } else if (timePicker.getText().toString().equals("Set Time")) {
+                    Toast.makeText(add_course.this, "Time Empty", Toast.LENGTH_SHORT).show();
+                }
+                else if (days.equals("")) {
+                    Toast.makeText(add_course.this, "Days Empty", Toast.LENGTH_SHORT).show();
+
+                }
+
+                else {
                     PD.show();
                     cou_name = name.getText().toString();
-                    cou_time = time.getText().toString();
+                    cou_time = timePicker.getText().toString();
                     cou_lab = lab.getText().toString();
                     cou_state = state.getText().toString();
 
@@ -104,9 +152,13 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
                                     PD.dismiss();
 
 
-                                    startActivity(new Intent(add_course.this, Schedule.class));
+
+                                    Intent read_intent = new Intent(add_course.this, Schedule.class)
+                                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(read_intent);
+
                                     Toast.makeText(getApplicationContext(), "Data Inserted Successfully", Toast.LENGTH_LONG).show();
-                                    finish();
+
                                 }
                             }, new Response.ErrorListener() {
 
@@ -126,6 +178,7 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
                             params.put("course_time", cou_time);
                             params.put("course_lab", cou_lab);
                             params.put("course_state", cou_state);
+                            params.put("course_days", days);
                             params.put("dr_id", String.valueOf(dr_id));
                             return params;
                         }
@@ -146,6 +199,7 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
     }
 
     public static synchronized add_course getInstance() {
+
         return mInstance;
     }
 
@@ -228,10 +282,10 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
                     minute_x = minute;
 
                     if(minute < 10) {
-                        time.setText(hour_x + ":0" + minute_x);                                                                              //
+                        timePicker.setText(hour_x + ":0" + minute_x);                                                                              //
                     }
                     else{
-                        time.setText(hour_x + ":" + minute_x);
+                        timePicker.setText(hour_x + ":" + minute_x);
                     }
                 }
             };

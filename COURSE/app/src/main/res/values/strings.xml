@@ -6,6 +6,15 @@
 
 
 
+    <string-array name="Days">
+        <item>Choose a day</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+    </string-array>
+
 
 
 
