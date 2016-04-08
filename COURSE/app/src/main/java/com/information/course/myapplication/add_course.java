@@ -281,11 +281,21 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
                     hour_x = hourOfDay;
                     minute_x = minute;
 
+                    if(hourOfDay < 10){
                     if(minute < 10) {
-                        timePicker.setText(hour_x + ":0" + minute_x);                                                                              //
+                        timePicker.setText(0+""+hour_x + ":0" + minute_x);                                                                              //
                     }
                     else{
-                        timePicker.setText(hour_x + ":" + minute_x);
+                        timePicker.setText(0+""+hour_x + ":" + minute_x);
+                    }}
+
+                    else{
+                        if(minute < 10) {
+                            timePicker.setText(hour_x + ":0" + minute_x);                                                                              //
+                        }
+                        else{
+                            timePicker.setText(hour_x + ":" + minute_x);
+                        }
                     }
                 }
             };
