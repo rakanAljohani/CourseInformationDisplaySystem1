@@ -35,12 +35,12 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
     private static Update_Delete mInstance;
 
     ProgressDialog PD;
-    EditText name,lab,state;
+    EditText name,lab;
     Button update,delete,time;
-    Spinner day;
+    Spinner day, state_spinner;
     static final int DIALOG_ID = 0;
     static final int DIALOG_ID2 = 1;
-
+     String[] Days,State;
     int hour_x ;
     int minute_x;
     int  dr_id;
@@ -50,7 +50,7 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
     String lab1;
     String time1;
     String state1;
-    String days1;
+    String days1,days2,days3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +68,10 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
 
         name = (EditText) findViewById(R.id.name_coursee);
         lab = (EditText) findViewById(R.id.lab_coursee);
-        state = (EditText) findViewById(R.id.state_coursee);
+
 
         day = (Spinner) findViewById(R.id.days_coursee);
+        state_spinner = (Spinner) findViewById(R.id.spinner3);
 
         Intent i = getIntent();
 
@@ -80,39 +81,60 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
         id = cour.get(Schedule._ID);
         name.setText(cour.get(Schedule._NAME));
         lab.setText(cour.get(Schedule._LAB));
-        state.setText(cour.get(Schedule._STATE));
         time.setText(cour.get(Schedule._TIME));
         final String days=cour.get(Schedule._DAYS);
+        final String state=cour.get(Schedule._STATE);
 
-        final String[] Days;
+        State =getResources().getStringArray(R.array.State);
         Days =getResources().getStringArray(R.array.Days);
 
+        state_spinner.post(new Runnable() {
+            @Override
+            public void run() {
+                if(state.equals("OnTime")){
+                    state1="OnTime";
+                    state_spinner.setSelection(0);
+                }
+                else if(state.equals("NoClass")){
+                    state1="NoClass";
+                    state_spinner.setSelection(1);
+                }
+
+            }
+        });
         day.post(new Runnable() {
             @Override
             public void run() {
-                if(days.equals("Choose a day")){
-                    days1="";
-                    day.setSelection(0);
-                }
-                else if(days.equals("Sunday")){
+                if(days.equals("Sunday")){
                     days1="Sunday";
-                    day.setSelection(1);
+                    day.setSelection(0);
                 }
                 else if(days.equals("Monday")){
                     days1="Monday";
-                    day.setSelection(2);
+                    day.setSelection(1);
                 }
                 else if(days.equals("Tuesday")){
                     days1="Tuesday";
-                    day.setSelection(3);
+                    day.setSelection(2);
                 }
                 else if(days.equals("Wednesday")){
                     days1="Wednesday";
-                    day.setSelection(4);
+                    day.setSelection(3);
                 }
                 else if(days.equals("Thursday")){
                     days1="Thursday";
+                    day.setSelection(4);
+                }
+                else if(days.equals("Sunday - Wednesday - Thursday")){
+                    days1="Sunday";
+                    days2="Wednesday";
+                    days3="Thursday";
                     day.setSelection(5);
+                }
+                else if(days.equals("Monday - Tuesday")){
+                    days1="Monday";
+                    days1="Tuesday";
+                    day.setSelection(6);
                 }
 
             }
@@ -128,11 +150,7 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
             {
                 int index = arg0.getSelectedItemPosition();
 
-                if(Days[index].equals("Choose a day")){
-                    days1="";
-
-                }
-                else if(Days[index].equals("Sunday")){
+                if(Days[index].equals("Sunday")){
                     days1="Sunday";
                 }
                 else if(Days[index].equals("Monday")){
@@ -146,6 +164,40 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
                 }
                 else if(Days[index].equals("Thursday")){
                     days1="Thursday";
+                }
+                else if(Days[index].equals("Sunday - Wednesday - Thursday")){
+                    days1="Sunday";
+                    days2="Wednesday";
+                    days3="Thursday";
+                    day.setSelection(6);
+                }
+                else if(Days[index].equals("Monday - Tuesday")){
+                    days1="Monday";
+                    days2="Tuesday";
+                    day.setSelection(7);
+                }
+
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, State);
+
+        state_spinner.setAdapter(adapter2);
+
+        state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3)
+            {
+                int index = arg0.getSelectedItemPosition();
+
+                if(State[index].equals("OnTime")){
+                    state1="OnTime";
+                }
+                else if(State[index].equals("NoClass")){
+                    state1="NoClass";
                 }
 
 
@@ -164,21 +216,16 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
                     Toast.makeText(Update_Delete.this, "Name Empty", Toast.LENGTH_SHORT).show();
                 } else if (lab.getText().toString().equals("")) {
                     Toast.makeText(Update_Delete.this, "Lab Empty", Toast.LENGTH_SHORT).show();
-                } else if (state.getText().toString().equals("")) {
-                    Toast.makeText(Update_Delete.this, "State Empty", Toast.LENGTH_SHORT).show();
-                } else if (days1.equals("")) {
-                    Toast.makeText(Update_Delete.this, "Days Empty", Toast.LENGTH_SHORT).show();
-
-                } else {
+                }  else {
 
 
                 name1 = name.getText().toString();
                 lab1 = lab.getText().toString();
                 time1 = time.getText().toString();
-                state1= state.getText().toString();
+
 
                 PD.show();
-                String update_url = "http://rakan.esy.es/update.php?id=" + id + "&name=" + name1 + "&lab=" + lab1 + "&time=" + time1 + "&state=" + state.getText().toString()+ "&days=" + days1;
+                String update_url = "http://rakan.esy.es/update.php?id=" + id + "&name=" + name1 + "&lab=" + lab1 + "&time=" + time1 + "&state=" + state1+ "&days=" + days1;
 
                 JsonObjectRequest update_request = new JsonObjectRequest(update_url,
                         null, new Response.Listener<JSONObject>() {

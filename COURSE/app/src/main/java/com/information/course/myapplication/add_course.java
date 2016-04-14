@@ -43,11 +43,11 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
     int hour_x ;
     int minute_x;
     int  dr_id;
-    String days;
+    String days1,days2,days3,state;
     ProgressDialog PD;
 
 
-    EditText name, lab, state;
+    EditText name, lab;
     Button  add;
 
     @Override
@@ -55,14 +55,17 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
         mInstance = this;
-        final String[] Days;
+        final String[] Days,State;
 
         Days =getResources().getStringArray(R.array.Days);
+        State =getResources().getStringArray(R.array.State);
         Spinner s1 = (Spinner) findViewById(R.id.spinner);
-
+        Spinner s2 = (Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, Days);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, State);
 
         s1.setAdapter(adapter);
+        s2.setAdapter(adapter2);
 
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
@@ -70,23 +73,31 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
             {
                 int index = arg0.getSelectedItemPosition();
 
-              if(Days[index].equals("Choose a day")){
-                  days="";
-              }
-               else if(Days[index].equals("Sunday")){
-                  days="Sunday";
+              if(Days[index].equals("Sunday")){
+                  days1="Sunday";
               }
               else if(Days[index].equals("Monday")){
-                  days="Monday";
+                  days1="Monday";
               }
               else if(Days[index].equals("Tuesday")){
-                  days="Tuesday";
+                  days1="Tuesday";
               }
               else if(Days[index].equals("Wednesday")){
-                  days="Wednesday";
+                  days1="Wednesday";
               }
               else if(Days[index].equals("Thursday")){
-                  days="Thursday";
+                  days1="Thursday";
+              }
+              else if(Days[index].equals("Sunday - Wednesday - Thursday")){
+                  days1="Sunday";
+                  days2="Wednesday";
+                  days3="Thursday";
+
+              }
+              else if(Days[index].equals("Monday - Tuesday")){
+                  days1="Monday";
+                  days2="Tuesday";
+
               }
 
 
@@ -97,6 +108,27 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
         });
 
 
+        s2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3)
+            {
+                int index = arg0.getSelectedItemPosition();
+
+                if(State[index].equals("OnTime")){
+                    state="OnTime";
+                }
+                else if(State[index].equals("NoClass")){
+                    state="NoClass";
+                }
+
+
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
 
         PD = new ProgressDialog(this);
         PD.setMessage("Loading.....");
@@ -104,9 +136,7 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
 
 
         name = (EditText) findViewById(R.id.name_course);
-
         lab = (EditText) findViewById(R.id.lab_course);
-        state = (EditText) findViewById(R.id.state_course);
         add = (Button) findViewById(R.id.add_course);
 
 
@@ -122,23 +152,17 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
                 else if (lab.getText().toString().equals("")) {
                     Toast.makeText(add_course.this, "Lab Empty", Toast.LENGTH_SHORT).show();
 
-                } else if (state.getText().toString().equals("")) {
-                    Toast.makeText(add_course.this, "State Empty", Toast.LENGTH_SHORT).show();
-
                 } else if (timePicker.getText().toString().equals("Set Time")) {
                     Toast.makeText(add_course.this, "Time Empty", Toast.LENGTH_SHORT).show();
                 }
-                else if (days.equals("")) {
-                    Toast.makeText(add_course.this, "Days Empty", Toast.LENGTH_SHORT).show();
 
-                }
 
                 else {
                     PD.show();
                     cou_name = name.getText().toString();
                     cou_time = timePicker.getText().toString();
                     cou_lab = lab.getText().toString();
-                    cou_state = state.getText().toString();
+
 
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(add_course.this);
                      dr_id = preferences.getInt("id", 0);
@@ -177,8 +201,8 @@ public class add_course extends AppCompatActivity implements AdapterView.OnItemS
                             params.put("course_name", cou_name);
                             params.put("course_time", cou_time);
                             params.put("course_lab", cou_lab);
-                            params.put("course_state", cou_state);
-                            params.put("course_days", days);
+                            params.put("course_state", state);
+                            params.put("course_days", days1);
                             params.put("dr_id", String.valueOf(dr_id));
                             return params;
                         }

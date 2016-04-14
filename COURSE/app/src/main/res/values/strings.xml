@@ -7,17 +7,20 @@
 
 
     <string-array name="Days">
-        <item>Choose a day</item>
         <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
         <item>Thursday</item>
+        <item>Sunday - Wednesday - Thursday</item>
+        <item>Monday - Tuesday</item>
     </string-array>
 
 
-
-
+    <string-array name="State">
+        <item>OnTime</item>
+        <item>NoClass</item>
+    </string-array>
 
 
 
