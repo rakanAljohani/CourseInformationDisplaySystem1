@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,7 +15,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -26,11 +24,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Schedule extends AppCompatActivity {
-    private RequestQueue mRequestQueue;
-    private static Schedule mInstance;
+
 
     ArrayList<HashMap<String, String>> COUR_List;
     ProgressDialog PD;
@@ -50,7 +46,8 @@ public class Schedule extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-        mInstance = this;
+
+
         COUR_List = new ArrayList<HashMap<String, String>>();
 
         PD = new ProgressDialog(this);
@@ -68,11 +65,11 @@ public class Schedule extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, final long id) {
 
-                Intent modify_intent = new Intent(Schedule.this,Update_Delete.class);
+                Intent intent = new Intent(Schedule.this,Update_Delete.class);
 
-                modify_intent.putExtra("courses",COUR_List.get(position));
+                intent.putExtra("courses",COUR_List.get(position));
 
-                startActivity(modify_intent);
+                startActivity(intent);
 
             }
         });
@@ -134,7 +131,7 @@ public class Schedule extends AppCompatActivity {
 
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "fail : "+e, Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -142,34 +139,18 @@ public class Schedule extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 PD.dismiss();
-                Toast.makeText(getApplicationContext(), "fail" + error, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "fail : " + error, Toast.LENGTH_LONG).show();
 
             }
         }) ;
 
 
-        // Adding request to request queue
-        Schedule.getInstance().addToReqQueue(jreq);
+
+
+        Volley.newRequestQueue(Schedule.this).add(jreq);
 
     }
 
-    public static synchronized Schedule getInstance() {
-        return mInstance;
-    }
-
-    public RequestQueue getReqQueue() {
-        if (mRequestQueue == null) {
-
-            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
-        }
-
-        return mRequestQueue;
-    }
-
-    public <T> void addToReqQueue(Request<T> req) {
-
-        getReqQueue().add(req);
-    }
 
 
 
@@ -188,7 +169,7 @@ public class Schedule extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.Add:
-                startActivity(new Intent(this,add_course.class));
+                startActivity(new Intent(this,Course.class));
                 return true;
 
             default:

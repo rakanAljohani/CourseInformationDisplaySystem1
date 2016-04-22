@@ -6,34 +6,27 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
-Button schedule,messages;
+public class MainMenu extends AppCompatActivity {
+Button schedule;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mainmenu);
 
 
         schedule =(Button)findViewById(R.id.schedule_button);
-        messages =(Button)findViewById(R.id.messages_button);
+
 
         schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(MainActivity.this,Schedule.class));
-               // finish();
+                startActivity(new Intent(MainMenu.this,Schedule.class));
 
             }
         });
 
 
-        messages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-
-            }
-        });
     }
 }

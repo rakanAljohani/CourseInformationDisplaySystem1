@@ -12,14 +12,24 @@
         <item>Tuesday</item>
         <item>Wednesday</item>
         <item>Thursday</item>
-        <item>Sunday - Wednesday - Thursday</item>
-        <item>Monday - Tuesday</item>
+        <item>Sunday_Tuesday_Thursday</item>
+        <item>Monday_Wednesday</item>
+    </string-array>
+
+    <string-array name="Days2">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
     </string-array>
 
 
     <string-array name="State">
         <item>OnTime</item>
-        <item>NoClass</item>
+        <item>Running</item>
+        <item>Canceled</item>
+        <item>Shifted_To</item>
     </string-array>
 
 
