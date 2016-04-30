@@ -1,15 +1,11 @@
 package com.information.course.myapplication;
 
         import android.support.v7.app.AppCompatActivity;
-        import com.android.volley.RequestQueue;
         import android.app.Dialog;
         import android.app.ProgressDialog;
         import android.app.TimePickerDialog;
         import android.content.Intent;
-        import android.content.SharedPreferences;
         import android.os.Bundle;
-        import android.preference.PreferenceManager;
-        import android.support.v7.app.AppCompatActivity;
         import android.view.View;
         import android.widget.AdapterView;
         import android.widget.ArrayAdapter;
@@ -19,21 +15,17 @@ package com.information.course.myapplication;
         import android.widget.TimePicker;
         import android.widget.Toast;
 
-        import com.android.volley.Request;
-        import com.android.volley.RequestQueue;
         import com.android.volley.Response;
         import com.android.volley.VolleyError;
         import com.android.volley.toolbox.JsonObjectRequest;
         import com.android.volley.toolbox.Volley;
-        import com.information.course.myapplication.R;
-import com.information.course.myapplication.Schedule;
 
-import org.json.JSONException;
+        import org.json.JSONException;
         import org.json.JSONObject;
 
         import java.util.HashMap;
 
-public class Update_Delete extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
+public class Notification extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
 
 
     ProgressDialog PD;
@@ -213,9 +205,9 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onClick(View v) {
                 if (name.getText().toString().equals("")) {
-                    Toast.makeText(Update_Delete.this, "Name Empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Notification.this, "Name Empty", Toast.LENGTH_SHORT).show();
                 } else if (lab.getText().toString().equals("")) {
-                    Toast.makeText(Update_Delete.this, "Lab Empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Notification.this, "Lab Empty", Toast.LENGTH_SHORT).show();
                 }  else {
 
 
@@ -260,7 +252,7 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
                         }
                     });
 
-                    Volley.newRequestQueue(Update_Delete.this).add(update_request);
+                    Volley.newRequestQueue(Notification.this).add(update_request);
 
                 }
 
@@ -310,7 +302,7 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
                     }
                 });
 
-                Volley.newRequestQueue(Update_Delete.this).add(delete_request);
+                Volley.newRequestQueue(Notification.this).add(delete_request);
 
 
             }
@@ -318,7 +310,7 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
 
     }
     private void MoveToSchedule() {
-        Intent read_intent = new Intent(Update_Delete.this, Schedule.class)
+        Intent read_intent = new Intent(Notification.this, Schedule.class)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         startActivity(read_intent);
@@ -357,7 +349,7 @@ public class Update_Delete extends AppCompatActivity implements AdapterView.OnIt
     protected Dialog onCreateDialog(int id){
 
         if(id == DIALOG_ID)
-            return new TimePickerDialog(Update_Delete.this, kTimePickerListener, hour_x, minute_x,false);
+            return new TimePickerDialog(Notification.this, kTimePickerListener, hour_x, minute_x,false);
         else if(id == DIALOG_ID2){
 
         }

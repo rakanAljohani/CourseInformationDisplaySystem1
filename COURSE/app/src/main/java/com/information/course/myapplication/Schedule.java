@@ -65,7 +65,7 @@ public class Schedule extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, final long id) {
 
-                Intent intent = new Intent(Schedule.this,Update_Delete.class);
+                Intent intent = new Intent(Schedule.this,Notification.class);
 
                 intent.putExtra("courses",COUR_List.get(position));
 
